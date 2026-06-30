@@ -1,0 +1,110 @@
+PLAY [Install nginx with vhosts] *************************************************************************************************************************************************************
+
+TASK [nginx-vhosts : Install nginx] **********************************************************************************************************************************************************
+The following additional packages will be installed:
+  nginx-common
+Suggested packages:
+  fcgiwrap nginx-doc
+The following NEW packages will be installed:
+  nginx nginx-common
+Preconfiguring packages ...
+0 upgraded, 2 newly installed, 0 to remove and 1 not upgraded.
+[WARNING]: Host '192.168.3.149' is using the discovered Python interpreter at '/usr/bin/python3.11', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.21/reference_appendices/interpreter_discovery.html for more information.
+changed: [192.168.3.149]
+
+TASK [nginx-vhosts : Copy nginx config from template] ****************************************************************************************************************************************
+--- before
++++ after: /home/good/.ansible/tmp/ansible-local-1032926m42menw8/tmpzqvgc8i2/site.conf.j2
+@@ -0,0 +1,13 @@
++server {
++    listen 80;
++    listen [::]:80;
++
++    root /var/www/fizfak.com;
++    index index.html;
++
++    server_name fizfak.com;
++
++    location / {
++	try_files $uri $uri/ =404;
++    }
++}
+\ No newline at end of file
+
+changed: [192.168.3.149] => (item=fizfak.com)
+--- before
++++ after: /home/good/.ansible/tmp/ansible-local-1032926m42menw8/tmp7ogu03y4/site.conf.j2
+@@ -0,0 +1,13 @@
++server {
++    listen 80;
++    listen [::]:80;
++
++    root /var/www/mehmat.com;
++    index index.html;
++
++    server_name mehmat.com;
++
++    location / {
++	try_files $uri $uri/ =404;
++    }
++}
+\ No newline at end of file
+
+changed: [192.168.3.149] => (item=mehmat.com)
+--- before
++++ after: /home/good/.ansible/tmp/ansible-local-1032926m42menw8/tmpd074w4m_/site.conf.j2
+@@ -0,0 +1,13 @@
++server {
++    listen 80;
++    listen [::]:80;
++
++    root /var/www/biofak.com;
++    index index.html;
++
++    server_name biofak.com;
++
++    location / {
++	try_files $uri $uri/ =404;
++    }
++}
+\ No newline at end of file
+
+changed: [192.168.3.149] => (item=biofak.com)
+
+TASK [nginx-vhosts : Create folders] *********************************************************************************************************************************************************
+ok: [192.168.3.149] => (item=fizfak.com)
+ok: [192.168.3.149] => (item=mehmat.com)
+ok: [192.168.3.149] => (item=biofak.com)
+
+TASK [nginx-vhosts : Copy index from templates] **********************************************************************************************************************************************
+ok: [192.168.3.149] => (item=fizfak.com)
+ok: [192.168.3.149] => (item=mehmat.com)
+ok: [192.168.3.149] => (item=biofak.com)
+
+RUNNING HANDLER [nginx-vhosts : restart nginx] ***********************************************************************************************************************************************
+changed: [192.168.3.149]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************
+192.168.3.149              : ok=5    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+curl 192.168.3.149 -H 'Host: fizfak.com'
+<HTML>
+  <BODY>
+    Hello! Site: fizfak.com
+  </BODY>
+
+</HTML>
+
+curl 192.168.3.149 -H 'Host: mehmat.com'
+<HTML>
+  <BODY>
+    Hello! Site: mehmat.com
+  </BODY>
+
+curl 192.168.3.149 -H 'Host: biofak.com'
+<HTML>
+  <BODY>
+    Hello! Site: biofak.com
+  </BODY>
+</HTML>
